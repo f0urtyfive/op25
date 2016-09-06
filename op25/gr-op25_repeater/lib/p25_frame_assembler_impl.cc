@@ -107,12 +107,12 @@ p25_frame_assembler_impl::forecast(int nof_output_items, gr_vector_int &nof_inpu
    // for do_imbe=true: input rate= 4800, output rate= 1600 = 32 * 50 (3:1)
    // for do_audio_output: output rate=8000 (ratio 0.6:1)
    const size_t nof_inputs = nof_input_items_reqd.size();
-   int nof_samples_reqd = 4.0 * nof_output_items;
+   int nof_samples_reqd = nof_samples_reqd = (int)ceil(4.0f * float(nof_output_items));
    if (d_do_imbe)
-     nof_samples_reqd = 3.0 * nof_output_items;
-   nof_samples_reqd = nof_output_items;
+     nof_samples_reqd = (int)ceil(3.0f * float(nof_output_items));
    if (d_do_audio_output)
-     nof_samples_reqd = 0.6 * nof_output_items;
+       nof_samples_reqd = (int)ceil(0.6f * float(nof_output_items));
+
    std::fill(&nof_input_items_reqd[0], &nof_input_items_reqd[nof_inputs], nof_samples_reqd);
 }
 
