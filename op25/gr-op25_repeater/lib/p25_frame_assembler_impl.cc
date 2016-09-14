@@ -103,19 +103,28 @@ static const int MAX_IN = 1;	// maximum number of input streams
 void
 p25_frame_assembler_impl::forecast(int nof_output_items, gr_vector_int &nof_input_items_reqd)
 {
-    // for do_imbe=false: we output packed bytes (4:1 ratio)
-    // for do_imbe=true: input rate= 4800, output rate= 1600 = 32 * 50 (3:1)
-    // for do_audio_output: output rate=8000 (ratio 0.6:1)
+    //Input Rate:
+    //  For FDMA: 4800
+    //  For TDMA: 6000
+    //Output Rate:
+    //  For do_imbe=false: we output packed bytes (4:1 ratio)
+    //  For do_imbe=true: output rate= 1600 = 32 * 50 (3:1)
+    //  For do_audio_output: output rate=8000 (ratio 0.6:1)
     const size_t nof_inputs = nof_input_items_reqd.size();
     int nof_samples_reqd;
    
-    double samples_reqd = 4.0 * nof_output_items;
+    double 	samples_reqd = 4.0 * nof_output_items;
    
     if (d_do_imbe)
-   	  samples_reqd = 3.0 * nof_output_items;
+    		samples_reqd = 3.0 * nof_output_items;
    	  
     if (d_do_audio_output)
-          samples_reqd = 0.6 * nof_output_items;
+    	if (d_do_phase2_tdma)
+    		samples_reqd = 0.75 * nof_output_items;
+    	else
+        	samples_reqd = 0.6 * nof_output_items;
+
+    
    
     nof_samples_reqd = (int)ceil(samples_reqd);
     for(int i = 0; i < nof_inputs; i++) {
