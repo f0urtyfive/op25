@@ -94,7 +94,7 @@ static const int MAX_IN = 1;	// maximum number of input streams
 	d_do_msgq(do_msgq),
 	d_msg_queue(queue)
 {
-	set_output_multiple(1200); //http://i.imgur.com/l3v4P3s.jpg
+	set_output_multiple(100); //http://i.imgur.com/l3v4P3s.jpg
 	if (d_do_audio_output && !d_do_output)
 		fprintf(stderr, "p25_frame_assembler: error: do_output must be enabled if do_audio_output is enabled\n");
 	if (d_do_audio_output && !d_do_imbe)
