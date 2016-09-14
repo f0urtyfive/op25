@@ -102,9 +102,7 @@ static const int MAX_IN = 1;	// maximum number of input streams
 		fprintf(stderr, "p25_frame_assembler: error: do_audio_output must be enabled if do_phase2_tdma is enabled\n");
 		
 	if (d_do_audio_output)
-		set_output_multiple(800);
-	if (!d_do_imbe && !d_do_audio_output)
-		set_output_multiple(4);
+		set_output_multiple(864);
 }
 
 void
@@ -120,7 +118,7 @@ p25_frame_assembler_impl::forecast(int nof_output_items, gr_vector_int &nof_inpu
     const size_t nof_inputs = nof_input_items_reqd.size();
     int nof_samples_reqd;
    
-    double 	samples_reqd = 4.0 * nof_output_items;
+    double 	samples_reqd = 1.0 * nof_output_items;
    
     if (d_do_imbe)
     		samples_reqd = 3.0 * nof_output_items;
