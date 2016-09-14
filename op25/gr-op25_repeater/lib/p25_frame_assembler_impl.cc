@@ -103,6 +103,8 @@ static const int MAX_IN = 1;	// maximum number of input streams
 		
 	if (d_do_audio_output)
 		set_output_multiple(864);
+	if (!d_do_audio_output && !d_do_imbe)
+		set_output_multiple(160);
 }
 
 void
