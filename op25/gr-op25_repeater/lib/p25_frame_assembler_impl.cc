@@ -56,6 +56,11 @@ namespace gr {
 	p2tdma.set_slotid(slotid);
     }
 
+    size_t p25_frame_assembler_impl::get_errors() {
+        return total_errors;
+    }
+
+
     p25_frame_assembler::sptr
     p25_frame_assembler::make(const char* udp_host, int port, int debug, bool do_imbe, bool do_output, bool do_msgq, gr::msg_queue::sptr queue, bool do_audio_output, bool do_phase2_tdma)
     {
@@ -105,6 +110,7 @@ static const int MAX_IN = 1;	// maximum number of input streams
 		set_output_multiple(864);
 	if (!d_do_audio_output && !d_do_imbe)
 		set_output_multiple(160);
+	total_errors = 0;
 }
 
 void
@@ -148,8 +154,7 @@ p25_frame_assembler_impl::general_work (int noutput_items,
 {
 
   const uint8_t *in = (const uint8_t *) input_items[0];
-
-  p1fdma.rx_sym(in, ninput_items[0]);
+  total_errors += p1fdma.rx_sym(in, ninput_items[0]);
   if(d_do_phase2_tdma) {
 	for (int i = 0; i < ninput_items[0]; i++) {
 		if(p2tdma.rx_sym(in[i])) {
