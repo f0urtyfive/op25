@@ -239,10 +239,11 @@ p25p1_fdma::process_duid(uint32_t const duid, uint32_t const nac, uint8_t const 
 //	msg.reset();
 }
 
-void 
+size_t 
 p25p1_fdma::rx_sym (const uint8_t *syms, int nsyms)
 {
   struct timeval currtime;
+  size_t errs = 0;
   for (int i1 = 0; i1 < nsyms; i1++){
     if(framer->rx_sym(syms[i1])) {   // complete frame was detected
 		if (d_debug >= 10) {
@@ -310,7 +311,7 @@ p25p1_fdma::rx_sym (const uint8_t *syms, int nsyms)
 				char s[128];
 				imbe_deinterleave(framer->frame_body, cw, i);
 				// recover 88-bit IMBE voice code word
-				imbe_header_decode(cw, u[0], u[1], u[2], u[3], u[4], u[5], u[6], u[7], E0, ET);
+				errs = imbe_header_decode(cw, u[0], u[1], u[2], u[3], u[4], u[5], u[6], u[7], E0, ET);
 				// output one 32-byte msg per 0.020 sec.
 				// also, 32*9 = 288 byte pkts (for use via UDP)
 				sprintf(s, "%03x %03x %03x %03x %03x %03x %03x %03x\n", u[0], u[1], u[2], u[3], u[4], u[5], u[6], u[7]);
@@ -377,6 +378,7 @@ p25p1_fdma::rx_sym (const uint8_t *syms, int nsyms)
       d_msg_queue->insert_tail(msg);
     }
   }
+  return errs;
 }
 
 void p25p1_fdma::init_sock(const char* udp_host, int udp_port)

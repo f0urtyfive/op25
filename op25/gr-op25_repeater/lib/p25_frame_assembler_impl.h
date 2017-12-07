@@ -48,6 +48,7 @@ namespace gr {
 	bool d_do_phase2_tdma;
 	p25p2_tdma p2tdma;
 	bool d_do_msgq;
+	size_t total_errors;
 	gr::msg_queue::sptr d_msg_queue;
 
   // internal functions
@@ -57,6 +58,7 @@ namespace gr {
     void set_slotid(int slotid) ;
 	typedef std::vector<bool> bit_vector;
 	std::deque<int16_t> output_queue;
+    size_t get_errors();
 
  public:
    virtual void forecast(int nof_output_items, gr_vector_int &nof_input_items_reqd);

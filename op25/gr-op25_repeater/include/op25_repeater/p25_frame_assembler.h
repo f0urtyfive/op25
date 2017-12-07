@@ -50,6 +50,7 @@ namespace gr {
       static sptr make(const char* udp_host, int port, int debug, bool do_imbe, bool do_output, bool do_msgq, gr::msg_queue::sptr queue, bool do_audio_output, bool do_phase2_tdma);
       virtual void set_xormask(const char*p) {}
       virtual void set_slotid(int slotid) {}
+      virtual size_t get_errors() {}
     };
 
   } // namespace op25_repeater
