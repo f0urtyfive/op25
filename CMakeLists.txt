@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 project(gr-op25 CXX C)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 add_subdirectory(op25/gr-op25)
 add_subdirectory(op25/gr-op25_repeater)
 
