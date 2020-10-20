@@ -63,6 +63,11 @@ if(NOT Boost_FOUND)
     message(FATAL_ERROR "Boost required to compile op25")
 endif()
 
+
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 ########################################################################
 # Install directories
 ########################################################################
