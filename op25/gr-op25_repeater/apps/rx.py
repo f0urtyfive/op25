@@ -144,7 +144,7 @@ class p25_rx_block (gr.top_block):
                 import osmosdr
                 self.src = osmosdr.source(options.args)
             except Exception:
-                print "osmosdr source_c creation failure"
+                print("osmosdr source_c creation failure")
                 ignore = True
  
             if "rtl" in options.args.lower():
@@ -154,17 +154,17 @@ class p25_rx_block (gr.top_block):
             gain_names = self.src.get_gain_names()
             for name in gain_names:
                 range = self.src.get_gain_range(name)
-                print "gain: name: %s range: start %d stop %d step %d" % (name, range[0].start(), range[0].stop(), range[0].step())
+                print("gain: name: %s range: start %d stop %d step %d" % (name, range[0].start(), range[0].stop(), range[0].step()))
             if options.gains:
                 for tuple in options.gains.split(","):
                     name, gain = tuple.split(":")
                     gain = int(gain)
-                    print "setting gain %s to %d" % (name, gain)
+                    print("setting gain %s to %d" % (name, gain))
                     self.src.set_gain(gain, name)
 
             rates = self.src.get_sample_rates()
             try:
-                print 'supported sample rates %d-%d step %d' % (rates.start(), rates.stop(), rates.step())
+                print('supported sample rates %d-%d step %d' % (rates.start(), rates.stop(), rates.step()))
             except:
                 pass	# ignore
 
@@ -197,7 +197,7 @@ class p25_rx_block (gr.top_block):
 
         self.options = options
 
-        for i in xrange(len(speeds)):
+        for i in range(len(speeds)):
             if speeds[i] == _default_speed:
                 self.current_speed = i
                 self.default_speed_idx = i
@@ -207,8 +207,8 @@ class p25_rx_block (gr.top_block):
 
         # wait for gdb
         if options.pause:
-            print 'Ready for GDB to attach (pid = %d)' % (os.getpid(),)
-            raw_input("Press 'Enter' to continue...")
+            print('Ready for GDB to attach (pid = %d)' % (os.getpid(),))
+            input("Press 'Enter' to continue...")
 
         self.input_q = gr.msg_queue(10)
         self.output_q = gr.msg_queue(10)
@@ -316,7 +316,7 @@ class p25_rx_block (gr.top_block):
         if self.options.phase2_tdma:
             num_ambe = 2
         if self.options.logfile_workers:
-            for i in xrange(self.options.logfile_workers):
+            for i in range(self.options.logfile_workers):
                 demod = p25_demodulator.p25_demod_cb(input_rate=capture_rate,
                                                      demod_type=self.options.demod_type,
                                                      offset=self.options.offset)
@@ -360,7 +360,7 @@ class p25_rx_block (gr.top_block):
 
     def configure_tdma(self, params):
         if params['tdma'] is not None and not self.options.phase2_tdma:
-            print '***TDMA request for frequency %d failed- phase2_tdma option not enabled' % params['freq']
+            print('***TDMA request for frequency %d failed- phase2_tdma option not enabled' % params['freq'])
             return
         set_tdma = False
         if params['tdma'] is not None:
@@ -430,7 +430,7 @@ class p25_rx_block (gr.top_block):
         if self.rtl_found:
             self.src.set_gain(gain, 'LNA')
             if self.options.verbosity:
-                print 'RTL Gain of %d set to: %.1f' % (gain, self.src.get_gain('LNA'))
+                print('RTL Gain of %d set to: %.1f' % (gain, self.src.get_gain('LNA')))
         else:
             if self.baseband_input:
                 f = 1.0
@@ -510,7 +510,7 @@ class p25_rx_block (gr.top_block):
         self.info["capture-rate"] = capture_rate
         self.src.set_bandwidth(capture_rate)
         r = self.src.set_center_freq(self.options.frequency + self.options.calibration+ self.options.offset)
-        print 'set_center_freq: %d' % r
+        print('set_center_freq: %d' % r)
         if not r:
             raise RuntimeError("failed to set USRP frequency")
         # capture file
